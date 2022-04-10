@@ -8,22 +8,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Add event listeners on the submit button to update
     // grid as needed
-    const submitBtn = document.querySelector("#sizePicker input[type=submit]");
+    const submitBtn = document.querySelector(
+        "#sizePicker input[type=submit]");
+  
     submitBtn.addEventListener("click", e => {
         e.preventDefault();
         const params = getGridParameters();
         createPixelGrid(params.height, params.width);
+
+        // Add event listeners to individual cells
+        document.querySelectorAll(".pixel-cell").forEach(cell =>
+            cell.addEventListener("click", () => cell.style
+                .backgroundColor = gridParameters
+                .pickedColor));
     })
 
+    // Rubric requires that we add event listeners on individual cells.
+    // Not the table. Hence commenting this out.    
     // Add event listener on canvas to update cell color
-    document.querySelector("#pixelCanvas").addEventListener("click", e =>
-        e.target.style.backgroundColor = gridParameters.pickedColor);
+    //    document.querySelector("#pixelCanvas").addEventListener("click", e =>
+    //        e.target.style.backgroundColor = gridParameters.pickedColor);
 
     // Add event listener on color picker to update cell view
-    document.querySelector("#colorPicker").addEventListener("input", e => {
-        gridParameters.pickedColor = e.target.value;
-        console.log("Updated color!");
-    });
+    document.querySelector("#colorPicker").addEventListener("input",
+        e => {
+            gridParameters.pickedColor = e.target.value;
+            console.log("Updated color!");
+        });
 
 });
 
@@ -47,7 +58,8 @@ const createPixelGrid = (height, width) => {
         let pixelColumn = `<tr class="pixel-row" id="${"r"+x}">`;
 
         for (let y = 0; y < width; y++) {
-            pixelColumn += `<td class="pixel-cell" id="${"r"+x+"-c"+y}"></td>`;
+            pixelColumn +=
+                `<td class="pixel-cell" id="${"r"+x+"-c"+y}"></td>`;
         }
 
         document.querySelector("#pixelCanvas").innerHTML += pixelColumn;
